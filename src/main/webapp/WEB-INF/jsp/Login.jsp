@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1" isELIgnored="false"%>
 <%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
 <!DOCTYPE html>
 <html>
@@ -8,6 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+${message }
 <form:form method="POST" action="loginProcess"  modelAttribute="login">
 	<table>
             <tr>
@@ -16,7 +17,7 @@
             </tr>
             <tr>
                <td><form:label path = "password">Password</form:label></td>
-               <td><form:input type="password" path = "" /></td>
+               <td><form:input type="password" path = "password" /></td>
             </tr>
             <tr>
                <td></td>
@@ -28,7 +29,10 @@
                </td>
             </tr>
          </table> 
+         
 </form:form>
+
+${loginpart}
 
 </body>
 </html>
