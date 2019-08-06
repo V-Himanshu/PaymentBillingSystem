@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" isELIgnored="false"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
@@ -7,6 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-Welcome user Accountant
+Welcome user ${uname }
+
+<a href="excel">Click here</a>
 </body>
 </html>
