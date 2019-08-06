@@ -7,8 +7,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-Welcome user ${uname }
+${message }
+<button onclick="location.href='createStudentPage'">Create Student</button>
+<button onclick="location.href='updateStudentPage'">Update Student</button>
+<button onclick="location.href='deleteStudentPage'">Delete Student</button>
+<button onclick="location.href='searchStudentPage'">Search Student</button>
 
-<a href="excel">Click here</a>
 </body>
 </html>

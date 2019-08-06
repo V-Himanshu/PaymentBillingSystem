@@ -7,6 +7,7 @@ import com.mysql.jdbc.Statement;
 import org.springframework.stereotype.Repository;
 import java.sql.Connection;
 import com.payment.model.Login;
+import com.payment.model.Student;
 
 @Repository
 public class LoginDaoImpl {
@@ -32,5 +33,24 @@ public class LoginDaoImpl {
 		}
 
 		return false;
+	}
+
+	public boolean create(Connection conn, Student student) {
+		Statement statement = null;
+		try {
+			statement = (Statement) conn.createStatement();
+			String sql = "Insert into student(num_student_register_number,vch_student_name,num_student_department_id,vch_student_email ,num_student_phone,num_student_parent_phone,num_modified_by_accountant) values("
+					+ student.getRegisterNumber() + ",'" +  student.getName() + "'," + student.getDepartmentId() + 
+					  ",'" + student.getEmail() + "'," + student.getPhone() +"," + student.getParentPhone() +"," +
+					+ student.getModifiedByAccountant() + ")";
+			statement.executeUpdate(sql);
+			return true;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			return false;
+		}
+
 	}
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.payment.dao.LoginDaoImpl;
 import com.payment.model.Login;
+import com.payment.model.Student;
 
 @Service
 public class LoginServiceImpl implements LoginService{
@@ -50,6 +51,37 @@ public class LoginServiceImpl implements LoginService{
 		}
 
 		return false;
+	}
+
+	public boolean createStudent(Student student) {
+		Connection conn = null;
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			System.out.println("Connecting to database...");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			System.out.println("Connected database successfully...");
+			if (loginDaoImpl.create(conn, student)) {
+				return true;
+			}
+
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+
+		return false;
+		
 	}
 
 }

@@ -12,28 +12,30 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.payment.model.Login;
+import com.payment.model.Student;
 import com.payment.service.LoginService;
 import com.payment.service.LoginServiceImpl;
 
 
 
 @Controller
-@SessionAttributes("login")
+
 public class MainController {
 
 	LoginService loginServiceImpl = new LoginServiceImpl();
+	ModelAndView modelAndView;
 
 	@RequestMapping(value = "/login")
 	public String login(Model model) {
-		Login login = new Login();
-		model.addAttribute("login", login);
+//		Login login = new Login();
+//		model.addAttribute("login", login);
 		return "Login";
 	}
 
 	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
 	public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse httpServletResponse,
 			@ModelAttribute("login") Login login) {
-		ModelAndView modelAndView;
+		
 
 		if (loginServiceImpl.loginValidation(login)) {
 			modelAndView = new ModelAndView("welcome");
@@ -44,6 +46,28 @@ public class MainController {
 
 		return modelAndView;
 	}
+	
+	@RequestMapping(value="/createStudentPage")
+	public String createStudentPage() {
+		return "CreateStudent";
+	}
+	
+	@RequestMapping(value="/createStudent", method = RequestMethod.POST)
+	public ModelAndView createStudentProcess(@ModelAttribute("student")Student student) {
+		
+		if(loginServiceImpl.createStudent(student)) {
+			modelAndView = new ModelAndView("welcome");
+			modelAndView.addObject("message", "Added Successfully!!");
+		}else {
+			modelAndView = new ModelAndView("CreateStudent");
+			modelAndView.addObject("message", "Failed Creating Student");
+		}
+		
+		
+		return modelAndView;
+	}
+	
+	
 	
 	
 	
