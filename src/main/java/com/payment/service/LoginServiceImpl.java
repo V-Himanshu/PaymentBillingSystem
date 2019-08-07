@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import org.springframework.stereotype.Service;
 
 import com.payment.dao.LoginDaoImpl;
+import com.payment.model.Accountant;
 import com.payment.model.Login;
 import com.payment.model.Student;
 
@@ -21,7 +22,7 @@ public class LoginServiceImpl implements LoginService {
 	static final String USER = "root";
 	static final String PASS = "";
 
-	public boolean loginValidation(Login login) {
+	public int loginValidation(Login login) {
 
 		Connection conn = null;
 		try {
@@ -33,9 +34,9 @@ public class LoginServiceImpl implements LoginService {
 
 			System.out.println("Connected database successfully...");
 
-			if (loginDaoImpl.loginValidate(conn, login)) {
-				return true;
-			}
+			
+			return loginDaoImpl.loginValidate(conn, login);
+			
 
 		} catch (Exception e) {
 			// Handle errors for Class.forName
@@ -50,7 +51,7 @@ public class LoginServiceImpl implements LoginService {
 			}
 		}
 
-		return false;
+		return -1;
 	}
 
 	public boolean createStudent(Student student) {
@@ -176,6 +177,98 @@ public class LoginServiceImpl implements LoginService {
 				se.printStackTrace();
 			}
 		}
+	}
+
+	public boolean createAccountant(Accountant accountant) {
+		Connection conn = null;
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			System.out.println("Connecting to database...");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			System.out.println("Connected database successfully...");
+			if (loginDaoImpl.createAccountant(conn, accountant)) {
+				return true;
+			}
+
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+
+		} finally {
+			// finally block used to close resources
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+
+	public boolean updateAccountant(int registerNumber, Accountant accountant) {
+		Connection conn = null;
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			System.out.println("Connecting to database...");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			System.out.println("Connected database successfully...");
+			loginDaoImpl.updateAccountant(conn, registerNumber, accountant);
+
+			return true;
+
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+			return false;
+
+		} finally {
+			// finally block used to close resources
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+	}
+
+	public Accountant searchAccountant(int accountantId) {
+		Connection conn = null;
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			System.out.println("Connecting to database...");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			System.out.println("Connected database successfully...");
+
+			Accountant accountant;
+			accountant = loginDaoImpl.searchAccountant(conn, accountantId);
+			return accountant;
+
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+
+		} finally {
+			// finally block used to close resources
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 }

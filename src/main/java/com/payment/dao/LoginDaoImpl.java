@@ -6,34 +6,54 @@ import com.mysql.jdbc.Statement;
 
 import org.springframework.stereotype.Repository;
 import java.sql.Connection;
+
+import com.payment.model.Accountant;
 import com.payment.model.Login;
 import com.payment.model.Student;
 
 @Repository
 public class LoginDaoImpl {
 
-	public boolean loginValidate(Connection conn, Login login) {
+	public int loginValidate(Connection conn, Login login) {
 		Statement statement = null;
 		try {
 			statement = (Statement) conn.createStatement();
-			String sql = "SELECT num_accountant_id, vch_accountant_password FROM login where chr_active_status ='Y'";
-			ResultSet rs = statement.executeQuery(sql);
-			System.out.println(rs.getFetchSize());
 
-			while (rs.next()) {
+			if (login.getUserType().equals("accountant")) {
+				String sql = "SELECT num_accountant_id, vch_accountant_password FROM login where chr_active_status ='Y'";
+				ResultSet rs = statement.executeQuery(sql);
+				System.out.println(rs.getFetchSize());
 
-				int id = rs.getInt("num_accountant_id");
-				String password = rs.getString("vch_accountant_password");
-				if ((Integer.parseInt(login.getUserName())) == id && (login.getPassword()).equals(password)) {
-					return true;
+				while (rs.next()) {
+
+					int id = rs.getInt("num_accountant_id");
+					String password = rs.getString("vch_accountant_password");
+					if ((Integer.parseInt(login.getUserName())) == id && (login.getPassword()).equals(password)) {
+						return 1; // Accountant return 1
+					}
 				}
 			}
+			if (login.getUserType().equals("admin")) {
+				String sql = "SELECT num_administrator_id , vch_administrator_password FROM login where chr_active_status ='Y'";
+				ResultSet rs = statement.executeQuery(sql);
+				System.out.println(rs.getFetchSize());
+
+				while (rs.next()) {
+
+					int id = rs.getInt("num_administrator_id");
+					String password = rs.getString("vch_administrator_password");
+					if ((Integer.parseInt(login.getUserName())) == id && (login.getPassword()).equals(password)) {
+						return 0; // Admin return 0
+					}
+				}
+			}
+
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
 
-		return false;
+		return -1; // Invalid return -1
 	}
 
 	public boolean create(Connection conn, Student student) {
@@ -124,5 +144,73 @@ public class LoginDaoImpl {
 			return false;
 		}
 
+	}
+
+	public boolean createAccountant(Connection conn, Accountant accountant) {
+		Statement statement = null;
+		try {
+			statement = (Statement) conn.createStatement();
+			String sql = "Insert into accountant(num_accountant_id,vch_accountant_name,num_accountant_salary,num_accountant_phone,vch_accountant_email,num_accountant_branch_id) values("
+					+ accountant.getAccountantId() + ",'" + accountant.getName() + "'," + accountant.getSalary() + ","
+					+ accountant.getPhone() + ",'" + accountant.getEmail() + "'," + accountant.getBranchId() + ")";
+			statement.executeUpdate(sql);
+			return true;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean updateAccountant(Connection conn, int accountantId, Accountant accountant) {
+		Statement statement = null;
+		try {
+			statement = (Statement) conn.createStatement();
+			String sql = "Update accountant set vch_accountant_name='" + accountant.getName()
+					+ "',num_accountant_salary=" + accountant.getSalary() + ",num_accountant_phone="
+					+ accountant.getPhone() + ",vch_accountant_email='" + accountant.getEmail()
+					+ "',num_accountant_branch_id=" + accountant.getBranchId() + " where num_accountant_id=" + accountantId;
+			statement.executeUpdate(sql);
+			return true;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			return false;
+
+		}
+
+	}
+
+	public Accountant searchAccountant(Connection conn, int accountantId) {
+		Statement statement = null;
+		Accountant accountant = new Accountant();
+		try {
+
+			System.out.println(accountantId + "DAO");
+			statement = (Statement) conn.createStatement();
+			String sql = "Select * from accountant where num_accountant_id=" + accountantId;
+			ResultSet rs = statement.executeQuery(sql);
+			accountant.setAccountantId(accountantId);
+			while (rs.next()) {
+//			System.out.println(rs.getString("vch_student_name"));
+				accountant.setName(rs.getString("vch_accountant_name"));
+				accountant.setSalary(rs.getInt("num_accountant_salary"));
+				accountant.setPhone(rs.getInt("num_accountant_phone"));
+				accountant.setEmail(rs.getString("vch_accountant_email"));
+				accountant.setBranchId(rs.getInt("num_accountant_branch_id"));
+				accountant.setActiveStatus(rs.getString("chr_accountant_active_status"));
+			}
+			return accountant;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			return null;
+
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

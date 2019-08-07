@@ -3,6 +3,15 @@ package com.payment.model;
 public class Login {
 	String userName;
 	String password;
+	String userType;
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
 
 	public String getUserName() {
 		return userName;

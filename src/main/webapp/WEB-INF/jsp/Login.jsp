@@ -25,8 +25,11 @@ p {
 				<td><input type="password" name="password" required="required" /></td>
 			</tr>
 			<tr>
-				<td></td>
-				<td></td>
+				<td><select name="userType">
+						<option value="accountant">Accountant</option>
+						<option value="admin">Administrator</option>
+				</select></td>
+				
 			</tr>
 			<tr>
 				<td><input type="submit" value="Login" /></td>

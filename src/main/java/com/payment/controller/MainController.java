@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.payment.model.Accountant;
 import com.payment.model.Login;
 import com.payment.model.Student;
 import com.payment.service.LoginService;
@@ -33,8 +34,11 @@ public class MainController {
 	public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse httpServletResponse,
 			@ModelAttribute("login") Login login) {
 
-		if (loginServiceImpl.loginValidation(login)) {
+		int result = loginServiceImpl.loginValidation(login);
+		if (result == 1) {
 			modelAndView = new ModelAndView("welcome");
+		} else if (result == 0) {
+			modelAndView = new ModelAndView("welcomeAdmin");
 		} else {
 			modelAndView = new ModelAndView("Login");
 			modelAndView.addObject("message", "Invalid Username or Password");
@@ -86,12 +90,12 @@ public class MainController {
 
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/updateStudentPage")
 	public String updateStudentPage() {
 		return "UpdateStudent";
 	}
-	
+
 	@RequestMapping(value = "/searchStudentForUpdate", method = RequestMethod.POST)
 	public ModelAndView searchStudentForUpdateProcess(HttpServletRequest request, HttpServletResponse response) {
 		int registerNumber = Integer.parseInt(request.getParameter("registerNumber"));
@@ -112,26 +116,26 @@ public class MainController {
 
 		return modelAndView;
 	}
-	
-	@RequestMapping(value="/updateStudent", method=RequestMethod.POST)
-	public ModelAndView updateStudent(HttpServletRequest request, @ModelAttribute("student")Student student) {
+
+	@RequestMapping(value = "/updateStudent", method = RequestMethod.POST)
+	public ModelAndView updateStudent(HttpServletRequest request, @ModelAttribute("student") Student student) {
 		int registerNumber = Integer.parseInt(request.getParameter("registerNumber"));
-		if(loginServiceImpl.updateStudent(registerNumber, student)) {
+		if (loginServiceImpl.updateStudent(registerNumber, student)) {
 			modelAndView = new ModelAndView("welcome");
 			modelAndView.addObject("message", "Update Success");
-			
+
 		} else {
 			modelAndView = new ModelAndView("UpdateStudent");
 			modelAndView.addObject("message", "Failed Updating Student data!!");
 		}
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/deleteStudentPage")
 	public String deleteStudentPage() {
 		return "DeleteStudent";
 	}
-	
+
 	@RequestMapping(value = "/searchStudentForDelete", method = RequestMethod.POST)
 	public ModelAndView searchStudentForDeleteProcess(HttpServletRequest request, HttpServletResponse response) {
 		int registerNumber = Integer.parseInt(request.getParameter("registerNumber"));
@@ -148,22 +152,98 @@ public class MainController {
 		modelAndView.addObject("studentPhone", student.getPhone());
 		modelAndView.addObject("parentPhone", student.getParentPhone());
 		modelAndView.addObject("modifiedbyAccountant", student.getModifiedByAccountant());
-		
 
 		return modelAndView;
 	}
-	
-	@RequestMapping(value="/deleteStudent", method=RequestMethod.POST)
+
+	@RequestMapping(value = "/deleteStudent", method = RequestMethod.POST)
 	public ModelAndView deleteStudent(HttpServletRequest request) {
 		int registerNumber = Integer.parseInt(request.getParameter("registerNumber"));
-		if(loginServiceImpl.deleteStudent(registerNumber)) {
+		if (loginServiceImpl.deleteStudent(registerNumber)) {
 			modelAndView = new ModelAndView("welcome");
 			modelAndView.addObject("message", "Deleted Successfully");
-		}else {
+		} else {
 			modelAndView = new ModelAndView("DeleteStudent");
 			modelAndView.addObject("message", "Failed to Delete records!!!");
 		}
 		return modelAndView;
 	}
+	
+	@RequestMapping(value = "/accountant")
+	String accountant() {
+		return "ChangeAccountant";
+	}
+	
+	@RequestMapping(value = "/student")
+	String student() {
+		return "ChangeStudent";
+	}
+	
+	@RequestMapping(value = "/createAccountantPage")
+	public String createAccountantPage() {
+		return "CreateAccountant";
+	}
+	
+	@RequestMapping(value = "/updateAccountantPage")
+	public String updateAccountantPage() {
+		return "UpdateAccountant";
+	}
+	
+	@RequestMapping(value = "/deleteAccountantPage")
+	public String deleteAccountantPage() {
+		return "DeleteAccountant";
+	}
+	
+	@RequestMapping(value = "/searchAccountantPage")
+	public String searchAccountantPage() {
+		return "SearchAccountant";
+	}
 
+	@RequestMapping(value = "/createAccountant", method = RequestMethod.POST)
+	public ModelAndView createAccountantProcess(@ModelAttribute("accountant") Accountant accountant) {
+
+		if (loginServiceImpl.createAccountant(accountant)) {
+			modelAndView = new ModelAndView("welcome");
+			modelAndView.addObject("message", "Added Successfully!!");
+		} else {
+			modelAndView = new ModelAndView("CreateAccountant");
+			modelAndView.addObject("message", "Failed Creating Student");
+		}
+
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/updateAccountant", method = RequestMethod.POST)
+	public ModelAndView updateAccountant(HttpServletRequest request, @ModelAttribute("accountant") Accountant accountant) {
+		int accountantId = Integer.parseInt(request.getParameter("accountantId"));
+		System.out.println(accountantId);
+		if (loginServiceImpl.updateAccountant(accountantId, accountant)) {
+			modelAndView = new ModelAndView("welcomeAccountant");
+			modelAndView.addObject("message", "Update Success");
+
+		} else {
+			modelAndView = new ModelAndView("UpdateAccountant");
+			modelAndView.addObject("message", "Failed Updating Student data!!");
+		}
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/searchAccountantForUpdate", method = RequestMethod.POST)
+	public ModelAndView searchAccountantForUpdateProcess(HttpServletRequest request, HttpServletResponse response) {
+		int accountantId = Integer.parseInt(request.getParameter("accountantId"));
+		Accountant accountant;
+		System.out.println(accountantId);
+		accountant = loginServiceImpl.searchAccountant(accountantId);
+
+		modelAndView = new ModelAndView("UpdateAccountant");
+		modelAndView.addObject("accountantId", accountant.getAccountantId());
+		modelAndView.addObject("name", accountant.getName());
+		modelAndView.addObject("salary", accountant.getSalary());
+		modelAndView.addObject("phone", accountant.getPhone());
+		modelAndView.addObject("email", accountant.getEmail());
+		modelAndView.addObject("branchId", accountant.getBranchId());
+		modelAndView.addObject("activeStatus", accountant.getActiveStatus());
+
+		return modelAndView;
+	}
 }
