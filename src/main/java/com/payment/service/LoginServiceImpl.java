@@ -11,7 +11,7 @@ import com.payment.model.Login;
 import com.payment.model.Student;
 
 @Service
-public class LoginServiceImpl implements LoginService{
+public class LoginServiceImpl implements LoginService {
 
 	LoginDaoImpl loginDaoImpl = new LoginDaoImpl();
 
@@ -70,6 +70,7 @@ public class LoginServiceImpl implements LoginService{
 		} catch (Exception e) {
 			// Handle errors for Class.forName
 			e.printStackTrace();
+
 		} finally {
 			// finally block used to close resources
 			try {
@@ -81,7 +82,100 @@ public class LoginServiceImpl implements LoginService{
 		}
 
 		return false;
-		
+
+	}
+
+	public Student searchStudent(int registerNumber) {
+		Connection conn = null;
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			System.out.println("Connecting to database...");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			System.out.println("Connected database successfully...");
+
+			Student student;
+			student = loginDaoImpl.search(conn, registerNumber);
+			return student;
+
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+
+		} finally {
+			// finally block used to close resources
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	public boolean updateStudent(int registerNumber, Student student) {
+		Connection conn = null;
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			System.out.println("Connecting to database...");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			System.out.println("Connected database successfully...");
+			loginDaoImpl.update(conn, registerNumber, student);
+
+			return true;
+
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+			return false;
+
+		} finally {
+			// finally block used to close resources
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+
+	}
+
+	public boolean deleteStudent(int registerNumber) {
+		Connection conn = null;
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			System.out.println("Connecting to database...");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			System.out.println("Connected database successfully...");
+			
+			loginDaoImpl.delete(conn, registerNumber);
+
+			return true;
+
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+			return false;
+
+		} finally {
+			// finally block used to close resources
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
 	}
 
 }

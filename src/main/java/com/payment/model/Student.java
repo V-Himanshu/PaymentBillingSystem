@@ -4,11 +4,12 @@ public class Student {
 	int registerNumber;
 	String name;
 	int departmentId;
-	int branchid;
+	int branchId;
 	String email;
 	int phone;
 	int parentPhone;
 	int modifiedByAccountant;
+	String activeStatus;
 
 	public int getRegisterNumber() {
 		return registerNumber;
@@ -21,7 +22,7 @@ public class Student {
 	@Override
 	public String toString() {
 		return "Student [registerNumber=" + registerNumber + ", name=" + name + ", departmentId=" + departmentId
-				+ ", branchid=" + branchid + ", email=" + email + ", phone=" + phone + ", parentPhone=" + parentPhone
+				+ ", branchid=" + branchId + ", email=" + email + ", phone=" + phone + ", parentPhone=" + parentPhone
 				+ ", modifiedByAccountant=" + modifiedByAccountant + "]";
 	}
 
@@ -41,12 +42,12 @@ public class Student {
 		this.departmentId = departmentId;
 	}
 
-	public int getBranchid() {
-		return branchid;
+	public int getBranchId() {
+		return branchId;
 	}
 
-	public void setBranchid(int branchid) {
-		this.branchid = branchid;
+	public void setBranchId(int branchid) {
+		this.branchId = branchid;
 	}
 
 	public String getEmail() {
@@ -79,5 +80,14 @@ public class Student {
 
 	public void setModifiedByAccountant(int modifiedByAccountant) {
 		this.modifiedByAccountant = modifiedByAccountant;
+	}
+
+	public String getActiveStatus() {
+		return activeStatus;
+	}
+
+	public void setActiveStatus(String string) {
+		
+		this.activeStatus = string.toUpperCase();
 	}
 }
