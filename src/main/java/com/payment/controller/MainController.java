@@ -246,4 +246,36 @@ public class MainController {
 
 		return modelAndView;
 	}
+	
+	@RequestMapping(value = "/deleteAccountant", method = RequestMethod.POST)
+	public ModelAndView deleteAccountant(HttpServletRequest request) {
+		int accountantId = Integer.parseInt(request.getParameter("accountantId"));
+		if (loginServiceImpl.deleteAccountant(accountantId)) {
+			modelAndView = new ModelAndView("welcome");
+			modelAndView.addObject("message", "Deleted Successfully");
+		} else {
+			modelAndView = new ModelAndView("DeleteStudent");
+			modelAndView.addObject("message", "Failed to Delete records!!!");
+		}
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/searchAccountant", method = RequestMethod.POST)
+	public ModelAndView searchAccountant(HttpServletRequest request, HttpServletResponse response) {
+		int accountantId = Integer.parseInt(request.getParameter("accountantId"));
+		Accountant accountant;
+		System.out.println(accountantId);
+		accountant = loginServiceImpl.searchAccountant(accountantId);
+
+		modelAndView = new ModelAndView("SearchAccountant");
+		modelAndView.addObject("accountantId", accountant.getAccountantId());
+		modelAndView.addObject("name", accountant.getName());
+		modelAndView.addObject("salary", accountant.getSalary());
+		modelAndView.addObject("phone", accountant.getPhone());
+		modelAndView.addObject("email", accountant.getEmail());
+		modelAndView.addObject("branchId", accountant.getBranchId());
+		modelAndView.addObject("activeStatus", accountant.getActiveStatus());
+
+		return modelAndView;
+	}
 }

@@ -21,4 +21,6 @@ public interface LoginService {
 	public boolean updateAccountant(int registerNumber, Accountant accountant);
 
 	public Accountant searchAccountant(int accountantId);
+
+	public boolean deleteAccountant(int accountantId);
 }

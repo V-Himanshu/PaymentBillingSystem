@@ -6,7 +6,8 @@ import java.sql.SQLException;
 
 import org.springframework.stereotype.Service;
 
-import com.payment.dao.LoginDaoImpl;
+import com.payment.dao.Dao;
+import com.payment.dao.DaoImpl;
 import com.payment.model.Accountant;
 import com.payment.model.Login;
 import com.payment.model.Student;
@@ -14,7 +15,7 @@ import com.payment.model.Student;
 @Service
 public class LoginServiceImpl implements LoginService {
 
-	LoginDaoImpl loginDaoImpl = new LoginDaoImpl();
+	Dao DaoImpl = new DaoImpl();
 
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/paymentbillingsystem";
@@ -35,7 +36,7 @@ public class LoginServiceImpl implements LoginService {
 			System.out.println("Connected database successfully...");
 
 			
-			return loginDaoImpl.loginValidate(conn, login);
+			return DaoImpl.loginValidate(conn, login);
 			
 
 		} catch (Exception e) {
@@ -64,7 +65,7 @@ public class LoginServiceImpl implements LoginService {
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 			System.out.println("Connected database successfully...");
-			if (loginDaoImpl.create(conn, student)) {
+			if (DaoImpl.create(conn, student)) {
 				return true;
 			}
 
@@ -98,7 +99,7 @@ public class LoginServiceImpl implements LoginService {
 			System.out.println("Connected database successfully...");
 
 			Student student;
-			student = loginDaoImpl.search(conn, registerNumber);
+			student = DaoImpl.search(conn, registerNumber);
 			return student;
 
 		} catch (Exception e) {
@@ -127,7 +128,7 @@ public class LoginServiceImpl implements LoginService {
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 			System.out.println("Connected database successfully...");
-			loginDaoImpl.update(conn, registerNumber, student);
+			DaoImpl.update(conn, registerNumber, student);
 
 			return true;
 
@@ -159,7 +160,7 @@ public class LoginServiceImpl implements LoginService {
 
 			System.out.println("Connected database successfully...");
 			
-			loginDaoImpl.delete(conn, registerNumber);
+			DaoImpl.delete(conn, registerNumber);
 
 			return true;
 
@@ -189,7 +190,7 @@ public class LoginServiceImpl implements LoginService {
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 			System.out.println("Connected database successfully...");
-			if (loginDaoImpl.createAccountant(conn, accountant)) {
+			if (DaoImpl.createAccountant(conn, accountant)) {
 				return true;
 			}
 
@@ -220,7 +221,7 @@ public class LoginServiceImpl implements LoginService {
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 			System.out.println("Connected database successfully...");
-			loginDaoImpl.updateAccountant(conn, registerNumber, accountant);
+			DaoImpl.updateAccountant(conn, registerNumber, accountant);
 
 			return true;
 
@@ -252,7 +253,7 @@ public class LoginServiceImpl implements LoginService {
 			System.out.println("Connected database successfully...");
 
 			Accountant accountant;
-			accountant = loginDaoImpl.searchAccountant(conn, accountantId);
+			accountant = DaoImpl.searchAccountant(conn, accountantId);
 			return accountant;
 
 		} catch (Exception e) {
@@ -269,6 +270,37 @@ public class LoginServiceImpl implements LoginService {
 			}
 		}
 		return null;
+	}
+
+	public boolean deleteAccountant(int accountantId) {
+		Connection conn = null;
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			System.out.println("Connecting to database...");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			System.out.println("Connected database successfully...");
+			
+			DaoImpl.deleteAccountant(conn, accountantId);
+
+			return true;
+
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+			return false;
+
+		} finally {
+			// finally block used to close resources
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
 	}
 
 }
