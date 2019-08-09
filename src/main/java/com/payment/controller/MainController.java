@@ -13,14 +13,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.payment.model.Accountant;
 import com.payment.model.Login;
 import com.payment.model.Student;
-import com.payment.service.LoginService;
-import com.payment.service.LoginServiceImpl;
+import com.payment.service.Service;
+import com.payment.service.ServiceImpl;
 
 @Controller
 
 public class MainController {
 
-	LoginService loginServiceImpl = new LoginServiceImpl();
+	Service loginServiceImpl = new ServiceImpl();
 	ModelAndView modelAndView;
 
 	@RequestMapping(value = "/login")

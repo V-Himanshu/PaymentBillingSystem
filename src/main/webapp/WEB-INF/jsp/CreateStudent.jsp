@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Payment Billing System</title>
 </head>
 <body>
 	<h2>Enter Student Data</h2>
