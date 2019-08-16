@@ -3,6 +3,7 @@ package com.payment.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,8 +21,11 @@ import com.payment.service.ServiceImpl;
 @Controller
 @SessionAttributes("user")
 public class MainController {
+	
+	 @Autowired
+	 public Service loginServiceImpl; 
 
-	Service loginServiceImpl = new ServiceImpl();
+//	Service loginServiceImpl = new ServiceImpl();
 	ModelAndView modelAndView;
 
 	@RequestMapping(value = "/login")

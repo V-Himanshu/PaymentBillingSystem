@@ -1,9 +1,10 @@
 package com.payment.service;
 
-import java.lang.annotation.Annotation;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.payment.dao.Dao;
 import com.payment.dao.DaoImpl;
@@ -11,10 +12,11 @@ import com.payment.model.Accountant;
 import com.payment.model.Login;
 import com.payment.model.Student;
 
-@org.springframework.stereotype.Service
+
 public class ServiceImpl implements Service {
 
-	Dao DaoImpl = new DaoImpl();
+	@Autowired
+	public Dao DaoImpl;
 
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/paymentbillingsystem";
