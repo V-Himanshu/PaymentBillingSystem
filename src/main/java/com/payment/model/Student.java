@@ -1,15 +1,15 @@
 package com.payment.model;
 
 public class Student {
-	int registerNumber;
-	String name;
-	int departmentId;
-	int branchId;
-	String email;
-	int phone;
-	int parentPhone;
-	int modifiedByAccountant;
-	String activeStatus;
+	private int registerNumber;
+	private String name;
+	private int departmentId;
+	private int branchId;
+	private String email;
+	private int phone;
+	private int parentPhone;
+	private int modifiedByAccountant;
+	private char activeStatus;
 
 	public int getRegisterNumber() {
 		return registerNumber;
@@ -82,12 +82,11 @@ public class Student {
 		this.modifiedByAccountant = modifiedByAccountant;
 	}
 
-	public String getActiveStatus() {
+	public char getActiveStatus() {
 		return activeStatus;
 	}
 
-	public void setActiveStatus(String string) {
-		
-		this.activeStatus = string.toUpperCase();
+	public void setActiveStatus(char activeStatus) {
+		this.activeStatus = Character.toUpperCase(activeStatus);
 	}
 }

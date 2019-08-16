@@ -11,7 +11,7 @@ import com.payment.model.Accountant;
 import com.payment.model.Login;
 import com.payment.model.Student;
 
-
+@org.springframework.stereotype.Service
 public class ServiceImpl implements Service {
 
 	Dao DaoImpl = new DaoImpl();
@@ -34,9 +34,7 @@ public class ServiceImpl implements Service {
 
 			System.out.println("Connected database successfully...");
 
-			
 			return DaoImpl.loginValidate(conn, login);
-			
 
 		} catch (Exception e) {
 			// Handle errors for Class.forName
@@ -158,7 +156,7 @@ public class ServiceImpl implements Service {
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 			System.out.println("Connected database successfully...");
-			
+
 			DaoImpl.delete(conn, registerNumber);
 
 			return true;
@@ -281,7 +279,7 @@ public class ServiceImpl implements Service {
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 			System.out.println("Connected database successfully...");
-			
+
 			DaoImpl.deleteAccountant(conn, accountantId);
 
 			return true;
@@ -302,14 +300,6 @@ public class ServiceImpl implements Service {
 		}
 	}
 
-	public Class<? extends Annotation> annotationType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String value() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }

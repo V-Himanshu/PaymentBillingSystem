@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.payment.model.Accountant;
@@ -17,7 +18,7 @@ import com.payment.service.Service;
 import com.payment.service.ServiceImpl;
 
 @Controller
-
+@SessionAttributes("user")
 public class MainController {
 
 	Service loginServiceImpl = new ServiceImpl();
@@ -37,8 +38,10 @@ public class MainController {
 		int result = loginServiceImpl.loginValidation(login);
 		if (result == 1) {
 			modelAndView = new ModelAndView("welcome");
+			modelAndView.addObject("user", login.getUserName());
 		} else if (result == 0) {
 			modelAndView = new ModelAndView("welcomeAdmin");
+			modelAndView.addObject("user", login.getUserName());
 		} else {
 			modelAndView = new ModelAndView("Login");
 			modelAndView.addObject("message", "Invalid Username or Password");
@@ -168,32 +171,32 @@ public class MainController {
 		}
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/accountant")
 	String accountant() {
 		return "ChangeAccountant";
 	}
-	
+
 	@RequestMapping(value = "/student")
 	String student() {
 		return "ChangeStudent";
 	}
-	
+
 	@RequestMapping(value = "/createAccountantPage")
 	public String createAccountantPage() {
 		return "CreateAccountant";
 	}
-	
+
 	@RequestMapping(value = "/updateAccountantPage")
 	public String updateAccountantPage() {
 		return "UpdateAccountant";
 	}
-	
+
 	@RequestMapping(value = "/deleteAccountantPage")
 	public String deleteAccountantPage() {
 		return "DeleteAccountant";
 	}
-	
+
 	@RequestMapping(value = "/searchAccountantPage")
 	public String searchAccountantPage() {
 		return "SearchAccountant";
@@ -203,7 +206,7 @@ public class MainController {
 	public ModelAndView createAccountantProcess(@ModelAttribute("accountant") Accountant accountant) {
 
 		if (loginServiceImpl.createAccountant(accountant)) {
-			modelAndView = new ModelAndView("welcome");
+			modelAndView = new ModelAndView("welcomeAdmin");
 			modelAndView.addObject("message", "Added Successfully!!");
 		} else {
 			modelAndView = new ModelAndView("CreateAccountant");
@@ -212,13 +215,14 @@ public class MainController {
 
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/updateAccountant", method = RequestMethod.POST)
-	public ModelAndView updateAccountant(HttpServletRequest request, @ModelAttribute("accountant") Accountant accountant) {
+	public ModelAndView updateAccountant(HttpServletRequest request,
+			@ModelAttribute("accountant") Accountant accountant) {
 		int accountantId = Integer.parseInt(request.getParameter("accountantId"));
 		System.out.println(accountantId);
 		if (loginServiceImpl.updateAccountant(accountantId, accountant)) {
-			modelAndView = new ModelAndView("welcomeAccountant");
+			modelAndView = new ModelAndView("welcomeAdmin");
 			modelAndView.addObject("message", "Update Success");
 
 		} else {
@@ -227,7 +231,7 @@ public class MainController {
 		}
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/searchAccountantForUpdate", method = RequestMethod.POST)
 	public ModelAndView searchAccountantForUpdateProcess(HttpServletRequest request, HttpServletResponse response) {
 		int accountantId = Integer.parseInt(request.getParameter("accountantId"));
@@ -246,20 +250,20 @@ public class MainController {
 
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/deleteAccountant", method = RequestMethod.POST)
 	public ModelAndView deleteAccountant(HttpServletRequest request) {
 		int accountantId = Integer.parseInt(request.getParameter("accountantId"));
 		if (loginServiceImpl.deleteAccountant(accountantId)) {
-			modelAndView = new ModelAndView("welcome");
+			modelAndView = new ModelAndView("welcomeAdmin");
 			modelAndView.addObject("message", "Deleted Successfully");
 		} else {
-			modelAndView = new ModelAndView("DeleteStudent");
+			modelAndView = new ModelAndView("DeleteAccountant");
 			modelAndView.addObject("message", "Failed to Delete records!!!");
 		}
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/searchAccountant", method = RequestMethod.POST)
 	public ModelAndView searchAccountant(HttpServletRequest request, HttpServletResponse response) {
 		int accountantId = Integer.parseInt(request.getParameter("accountantId"));

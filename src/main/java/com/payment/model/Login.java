@@ -1,9 +1,9 @@
 package com.payment.model;
 
 public class Login {
-	String userName;
-	String password;
-	String userType;
+	private String userName;
+	private String password;
+	private String userType;
 
 	public String getUserType() {
 		return userType;

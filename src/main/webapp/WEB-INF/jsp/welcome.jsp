@@ -5,8 +5,10 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Payment Billing System</title>
+
 </head>
 <body>
+
 ${message }
 <button onclick="location.href='createStudentPage'">Create Student</button>
 <button onclick="location.href='updateStudentPage'">Update Student</button>

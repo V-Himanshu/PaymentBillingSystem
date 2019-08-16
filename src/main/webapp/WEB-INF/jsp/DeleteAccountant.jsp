@@ -7,11 +7,11 @@
 <title>Payment Billing System</title>
 </head>
 <body>
-Delete Student Data
+Delete Accountant Data
 	<form action="deleteAccountant" method="POST">
 		<table>
 			<tr>
-				<td><label>Register Number:</label></td>
+				<td><label>Accountant Id:</label></td>
 				<td><input type="number" name="accountantId" /></td>
 			</tr>
 

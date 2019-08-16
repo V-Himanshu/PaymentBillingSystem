@@ -6,13 +6,16 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Payment Billing System</title>
+
 <style>
+
 p {
 	color: red;
 }
 </style>
 </head>
 <body>
+
 	<p>${message }</p>
 	<form method="POST" action="loginProcess">
 		<table>
@@ -36,5 +39,6 @@ p {
 			</tr>
 		</table>
 	</form>
+	
 </body>
 </html>

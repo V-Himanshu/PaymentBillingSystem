@@ -1,12 +1,12 @@
 package com.payment.dao;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import com.mysql.jdbc.Statement;
 
 import org.springframework.stereotype.Repository;
-import java.sql.Connection;
 
+import com.mysql.jdbc.Statement;
 import com.payment.model.Accountant;
 import com.payment.model.Login;
 import com.payment.model.Student;
@@ -94,7 +94,7 @@ public class DaoImpl implements Dao {
 				student.setPhone(rs.getInt("num_student_phone"));
 				student.setParentPhone(rs.getInt("num_student_parent_phone"));
 				student.setModifiedByAccountant(rs.getInt("num_modified_by_accountant"));
-				student.setActiveStatus(rs.getString("chr_active_status"));
+				student.setActiveStatus(rs.getString("chr_active_status").charAt(0));
 			}
 			return student;
 
@@ -154,6 +154,8 @@ public class DaoImpl implements Dao {
 					+ accountant.getAccountantId() + ",'" + accountant.getName() + "'," + accountant.getSalary() + ","
 					+ accountant.getPhone() + ",'" + accountant.getEmail() + "'," + accountant.getBranchId() + ")";
 			statement.executeUpdate(sql);
+			String sql1 = "Insert into login(num_accountant_id,vch_accountant_password)values(" + accountant.getAccountantId() + ",'" + accountant.getName() +  "')";
+			statement.executeUpdate(sql1);
 			return true;
 
 		} catch (SQLException e) {
@@ -166,12 +168,13 @@ public class DaoImpl implements Dao {
 	public boolean updateAccountant(Connection conn, int accountantId, Accountant accountant) {
 		Statement statement = null;
 		try {
+
 			statement = (Statement) conn.createStatement();
 			String sql = "Update accountant set vch_accountant_name='" + accountant.getName()
 					+ "',num_accountant_salary=" + accountant.getSalary() + ",num_accountant_phone="
 					+ accountant.getPhone() + ",vch_accountant_email='" + accountant.getEmail()
-					+ "',num_accountant_branch_id=" + accountant.getBranchId() + " where num_accountant_id="
-					+ accountantId;
+					+ "',num_accountant_branch_id=" + accountant.getBranchId() + ",chr_accountant_active_status='"
+					+ accountant.getActiveStatus() + "' where num_accountant_id=" + accountantId;
 			statement.executeUpdate(sql);
 			return true;
 
@@ -201,7 +204,7 @@ public class DaoImpl implements Dao {
 				accountant.setPhone(rs.getInt("num_accountant_phone"));
 				accountant.setEmail(rs.getString("vch_accountant_email"));
 				accountant.setBranchId(rs.getInt("num_accountant_branch_id"));
-				accountant.setActiveStatus(rs.getString("chr_accountant_active_status"));
+				accountant.setActiveStatus(rs.getString("chr_accountant_active_status").charAt(0));
 			}
 			return accountant;
 
@@ -222,6 +225,9 @@ public class DaoImpl implements Dao {
 			String sql = "Update accountant set chr_accountant_active_status='N' where num_accountant_id="
 					+ accountantId;
 			statement.executeUpdate(sql);
+			String sql1 = "Update login set chr_active_status='N' where num_accountant_id="
+					+ accountantId;
+			statement.executeUpdate(sql1);
 			return true;
 		} catch (SQLException e) {
 

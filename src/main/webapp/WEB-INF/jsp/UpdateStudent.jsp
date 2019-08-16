@@ -57,7 +57,7 @@
 			</tr>
 			<tr>
 				<td>Active Status:</td>
-				<td><input type="text" value="${activeStatus}" name="activeStatus" /></td>
+				<td><input type="text" value="${activeStatus}"  maxlength="1" name="activeStatus" /></td>
 			</tr>
 			<tr>
 				<td><input type="submit" value="Update" /></td>

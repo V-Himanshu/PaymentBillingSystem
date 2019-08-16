@@ -1,13 +1,13 @@
 package com.payment.model;
 
 public class Accountant {
-	int accountantId;
-	String name;
-	int salary;
-	int phone;
-	String email;
-	String activeStatus;
-	int branchId;
+	private int accountantId;
+	private String name;
+	private int salary;
+	private int phone;
+	private String email;
+	private char activeStatus;
+	private int branchId;
 
 	@Override
 	public String toString() {
@@ -55,12 +55,12 @@ public class Accountant {
 		this.email = email;
 	}
 
-	public String getActiveStatus() {
+	public char getActiveStatus() {
 		return activeStatus;
 	}
 
-	public void setActiveStatus(String activeStatus) {
-		this.activeStatus = activeStatus;
+	public void setActiveStatus(char activeStatus) {
+		this.activeStatus = Character.toUpperCase(activeStatus);
 	}
 
 	public int getBranchId() {
